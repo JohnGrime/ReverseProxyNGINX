@@ -1,0 +1,27 @@
+# > 3.3 required for --no-cache option to apk
+FROM alpine:3.7
+
+# Install NGINX
+RUN apk add --no-cache nginx
+
+# NGINX complains about no /run/nginx/nginx.pid unless we create the directory
+RUN mkdir /run/nginx
+
+# Copy over a default configuration; could also use e.g. mapped volume.
+COPY nginx.default.conf /etc/nginx/conf.d/default.conf
+
+# Docker creates internal network so can NGINX process in container can proxy route
+# to other services in running Docker containers. We still need to expose a port
+# from NGINX to the outside world, though!
+EXPOSE  80
+
+#
+# NGINX spawns a new daemon process and terminates the original on startup.
+# This is onconvenient for Docker, as containers only run as long as the
+# process specified in CMD or ENTRYPOINT is active. This can result in an
+# immediate halt of the container, so we tell NGINX not to run in daemon mode
+# and tell Docker to run the container in detached mode ("-d"), e.g.:
+#
+# docker run --rm -it -d -p 80:80 <NGINX image name>
+#
+CMD ["nginx", "-g", "daemon off;"]
