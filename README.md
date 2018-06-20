@@ -2,7 +2,7 @@
 
 Assume we're running a single [NGINX](https://www.nginx.com/) server instance acting as a reverse proxy for several [Node.js](https://nodejs.org/en/) "microservices". Let's place both the NGINX server and Node.js services into Docker containers (described by `Dockerfile.nginx` and `Dockerfile.node` respectively).
 
-The NGINX instance is controlled by a configuration file that instructs NGINX to pass incoming connections on port 80 to one of a collection of upstream Node.js services listening on port 3000:
+The NGINX instance is controlled by a configuration file that instructs NGINX to pass incoming connections on port `80` to one of a collection of upstream Node.js services listening on port `3000`:
 
 	#
 	# Simple pass through of all incoming traffic on port 80 to a group
@@ -115,3 +115,4 @@ The command `docker-compose -p test down` should take down all the Docker contai
 
 ## Notes
   - Using the `-p` option to specify the "project name" is important; remember to use it when (re)building images, starting the services, or stopping the services using `docker-compose`.
+  - While you must expose the NGINX container's port(s) to handle incoming traffic (see the `docker-compose.yml` file), it is not neccessary to expose the ports on which the Node.js services are listening; Docker sets up an internal virtual network on which the containers are visible to one another (but not to the "outside world").
