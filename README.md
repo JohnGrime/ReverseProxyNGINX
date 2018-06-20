@@ -33,7 +33,7 @@ The NGINX instance is controlled by a configuration file that instructs NGINX to
 		}
 	}
 
-To run multiple interacting Docker containers, one simple option is [Docker Compose](https://docs.docker.com/compose/). Docker Compose uses a configuration file in _Yet Another Markup File_ (YAML) format. However, as JSON is actually a subset of modern YAML, you can simply use JSON. A simple example of such a file might be:
+To run multiple interacting Docker containers, one simple option is [Docker Compose](https://docs.docker.com/compose/). Docker Compose (command line: `docker-compose`) uses a configuration file in _Yet Another Markup Language_ (YAML) format. However, we can also use JSON, which is actually a subset of modern YAML. A simple example of such a file might be:
 
 	{
 	"version": "3",
@@ -48,11 +48,12 @@ To run multiple interacting Docker containers, one simple option is [Docker Comp
 	}
 	}
 
-**Note**: By default, Docker Compose associates names to containers based on the current directory name. **For the following example, we'll specify this explicitly using the `-p` option**.
+**Note**: By default, `docker-compose` associates names to containers based on the current directory name. **For the following example, we'll specify this explicitly using the `-p` option**.
 
 To (re)build the required containers:
 
-	docker-compose -p test build
+	ReverseProxyNGINX $ docker-compose -p test build
+	ReverseProxyNGINX $ 
 
 This should generate the Docker images `test_node` and `test_nginx` (along with the `alpine` image both are based on):
 
@@ -65,7 +66,15 @@ This should generate the Docker images `test_node` and `test_nginx` (along with 
 
 We may now run the specified Docker containers to produce a unified system:
 
-	docker-compose -p test up -d --scale node=5
+	ReverseProxyNGINX $ docker-compose -p test up -d --scale node=5
+	Creating network "test_default" with the default driver
+	Creating test_nginx_1 ... done
+	Creating test_node_1  ... done
+	Creating test_node_2  ... done
+	Creating test_node_3  ... done
+	Creating test_node_4  ... done
+	Creating test_node_5  ... done
+	ReverseProxyNGINX $ 
 
 Here, we use detached mode (`-d`) and specify that five instances of the `node` service should be created (`--scale node=5`).
 
@@ -73,12 +82,12 @@ Let's take a look at the running containers:
 
 	ReverseProxyNGINX $ docker ps
 	CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
-	911efd09d78c        test_node           "node server.js"         3 minutes ago       Up 3 minutes        3000/tcp             test_node_3
-	8295c202779f        test_nginx          "nginx -g 'daemon of…"   3 minutes ago       Up 3 minutes        0.0.0.0:80->80/tcp   test_nginx_1
-	858dd06d1b9f        test_node           "node server.js"         3 minutes ago       Up 3 minutes        3000/tcp             test_node_2
-	b886dc2d4d7f        test_node           "node server.js"         3 minutes ago       Up 3 minutes        3000/tcp             test_node_1
-	6e7b45188cbd        test_node           "node server.js"         3 minutes ago       Up 3 minutes        3000/tcp             test_node_5
-	022b5ee07634        test_node           "node server.js"         3 minutes ago       Up 3 minutes        3000/tcp             test_node_4
+	d40469c3fa3b        test_node           "node server.js"         32 seconds ago      Up About a minute   3000/tcp             test_node_2
+	c68dbfb41396        test_node           "node server.js"         32 seconds ago      Up About a minute   3000/tcp             test_node_3
+	18bfb382bb9f        test_node           "node server.js"         32 seconds ago      Up About a minute   3000/tcp             test_node_4
+	444baf71060d        test_node           "node server.js"         32 seconds ago      Up About a minute   3000/tcp             test_node_5
+	a49002a497fd        test_node           "node server.js"         32 seconds ago      Up About a minute   3000/tcp             test_node_1
+	ea2b9530167d        test_nginx          "nginx -g 'daemon of…"   32 seconds ago      Up About a minute   0.0.0.0:80->80/tcp   test_nginx_1
 	ReverseProxyNGINX $
 
 If you point your browser at [localhost:80](http://localhost:80), you should see a message from the specific Node.js microservice to which NGINX passed the incoming connection. Refreshing the browser should change the message to reflect NGINX handing the connection off to a different microservice instance.
