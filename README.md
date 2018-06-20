@@ -36,7 +36,9 @@ The NGINX instance is controlled by a configuration file that instructs NGINX to
 To run multiple interacting Docker containers, one simple option is [Docker Compose](https://docs.docker.com/compose/). Docker Compose (command line: `docker-compose`) uses a configuration file in _Yet Another Markup Language_ (YAML) format. However, we can also use JSON, which is actually a subset of modern YAML. A simple example of such a file might be:
 
 	{
+
 	"version": "3",
+
 	"services": {
 	  "node": {
 	    "build": { "context": ".", "dockerfile": "Dockerfile.node" }
@@ -46,6 +48,7 @@ To run multiple interacting Docker containers, one simple option is [Docker Comp
 	    "ports": [ "80:80" ]
 	  }
 	}
+	
 	}
 
 **Note**: By default, `docker-compose` associates names to containers based on the current directory name. **For the following example, we'll specify this explicitly using the `-p` option**.
