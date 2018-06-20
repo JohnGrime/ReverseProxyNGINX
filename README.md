@@ -111,7 +111,7 @@ The command `docker-compose -p test down` should take down all the Docker contai
 	Removing test_node_5  ... done
 	Removing test_node_4  ... done
 	Removing network test_default
-	d-ip-10-194-65-72:ReverseProxyNGINX $ 
+	ReverseProxyNGINX $ 
 
 ## Notes
   - Using the `-p` option to specify the "project name" is important; remember to use it when (re)building images, starting the services, or stopping the services using `docker-compose`.
