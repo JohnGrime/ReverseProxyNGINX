@@ -58,7 +58,7 @@ To (re)build the required containers:
 	ReverseProxyNGINX $ docker-compose -p test build
 	ReverseProxyNGINX $ 
 
-This should generate the Docker images `test_node` and `test_nginx` (along with the `alpine` image both are based on):
+This should generate the Docker images `test_node` and `test_nginx` (along with the `alpine` Linux image both are based on):
 
 	ReverseProxyNGINX $ docker images
 	REPOSITORY          TAG                 IMAGE ID            CREATED                  SIZE
@@ -93,7 +93,7 @@ Let's take a look at the running containers:
 	ea2b9530167d        test_nginx          "nginx -g 'daemon of…"   32 seconds ago      Up About a minute   0.0.0.0:80->80/tcp   test_nginx_1
 	ReverseProxyNGINX $
 
-If you point your browser at [localhost:80](http://localhost:80), you should see a message from the specific Node.js microservice to which NGINX passed the incoming connection. Refreshing the browser should change the message to reflect NGINX handing the connection off to a different microservice instance.
+If you point your browser at [localhost:80](http://localhost:80), you should see a message from the Node.js process to which NGINX passed the incoming connection. Refreshing the browser should change the message to reflect NGINX handing the connection off to someone else; by default, NGINX uses a "[round-robin](http://nginx.org/en/docs/http/load_balancing.html)" load balancing strategy.
 
 The command `docker-compose -p test down` should take down all the Docker containers etc that were previously launched:
 
