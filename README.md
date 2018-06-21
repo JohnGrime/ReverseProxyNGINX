@@ -1,6 +1,6 @@
 # NGINX reverse proxy example
 
-Assume we're running a single [NGINX](https://www.nginx.com/) server instance acting as a reverse proxy for several [Node.js](https://nodejs.org/en/) "microservices". Let's place both the NGINX server and Node.js services into Docker containers (described by `Dockerfile.nginx` and `Dockerfile.node` respectively).
+Assume we're running a single [NGINX](https://www.nginx.com/) server instance acting as a reverse proxy for several [Node.js](https://nodejs.org/en/) "microservices". Let's place both the NGINX server and Node.js services into [Docker](https://www.docker.com/) containers (described by `Dockerfile.nginx` and `Dockerfile.node` respectively).
 
 The NGINX instance is controlled by a configuration file that instructs NGINX to pass incoming connections on port `80` to one of a collection of upstream Node.js services listening on port `3000`:
 
@@ -33,7 +33,7 @@ The NGINX instance is controlled by a configuration file that instructs NGINX to
 		}
 	}
 
-To run multiple interacting Docker containers, one simple option is [Docker Compose](https://docs.docker.com/compose/). Docker Compose (command line: `docker-compose`) uses a configuration file in _Yet Another Markup Language_ (YAML) format. However, we can also use JSON, which is actually a subset of modern YAML. A simple example of such a file might be:
+To run multiple interacting Docker containers, one simple option is [Docker Compose](https://docs.docker.com/compose/). Docker Compose (command line: `docker-compose`) uses a configuration file (`docker-compose.yaml`) in [YAML](https://en.wikipedia.org/wiki/YAML) format. However, we can also use JSON, which is actually a subset of modern YAML. A simple example of such a file might be:
 
 	{
 
@@ -51,7 +51,7 @@ To run multiple interacting Docker containers, one simple option is [Docker Comp
 	
 	}
 
-**Note**: By default, `docker-compose` associates names to containers based on the current directory name. **For the following example, we'll specify this explicitly using the `-p` option**.
+**Note**: By default, `docker-compose` associates names to containers based on the current directory name. **For the following example, we'll specify this "project name" explicitly using the `-p` option**.
 
 To (re)build the required containers:
 
@@ -79,7 +79,7 @@ We may now run the specified Docker containers to produce a unified system:
 	Creating test_node_5  ... done
 	ReverseProxyNGINX $ 
 
-Here, we use detached mode (`-d`) and specify that five instances of the `node` service should be created (`--scale node=5`).
+Here, we use detached mode (`-d`) and specify that five instances of the `node` service should be created (`--scale node=5`). We can also specify the `scale` information in the 
 
 Let's take a look at the running containers:
 
