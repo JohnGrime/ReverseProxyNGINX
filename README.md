@@ -1,6 +1,6 @@
 # NGINX reverse proxy example
 
-Assume we're running a single [NGINX](https://www.nginx.com/) server instance acting as a reverse proxy for several [Node.js](https://nodejs.org/en/) "microservices". Let's place both the NGINX server and Node.js services into [Docker](https://www.docker.com/) containers (described by `Dockerfile.nginx` and `Dockerfile.node` respectively).
+Assume we're running a single [NGINX](https://www.nginx.com/) server instance acting as a reverse proxy for several [Node.js](https://nodejs.org/en/) microservices. Let's place both the NGINX server and Node.js services into [Docker](https://www.docker.com/) containers (described by `Dockerfile.nginx` and `Dockerfile.node` respectively).
 
 The NGINX instance is controlled by a configuration file that instructs NGINX to pass incoming connections on port `80` to one of a collection of upstream Node.js services listening on port `3000`:
 
